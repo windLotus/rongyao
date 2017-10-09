@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td>上传图片</td>
-                <td><input name="img" id="img" type="file"></td>
+                <td><img src="" id="preImg" alt=""><input name="img" id="img" type="file"></td>
             </tr>
             <tr>
                 <td></td>
@@ -42,6 +42,32 @@
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script>
+    // 实现图片预览功能
+    $('#img').on('change', function() {
+        var formData = new FormData();
+        formData.append('img', $('#img')[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/upload", //提交数据到服务器的add中
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function(reslult) {
+                if (reslult.status == 0) {
+                    // alert(reslult.msg);
+                    $('#preImg').attr('src', '/img/' + reslult.src);
+                } else {
+                    alert(reslult.msg);
+                }
+            }
+        });
+    })
+
+
+
+
+
     $("#btn").click(function(e) {
         // 阻止submit默认跳转事件
         e.preventDefault();

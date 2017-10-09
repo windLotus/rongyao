@@ -1,5 +1,8 @@
 var fs = require("fs");
 
+// 引入模块
+var path = require('path');
+
 //引用formidable(用来帮助我们进行上传文件的第三方包)
 var formidable = require("formidable");
 
@@ -133,6 +136,39 @@ module.exports.postAdd = function(req, res) {
     //     });
     // });
 }
+module.exports.postUpload = function(req, res) {
+    //创建一个formideble对象
+    var form = new formidable.IncomingForm();
+
+    //由于formideble会自动将文件保存在一个临时目录下，所以我们需要将保存的路径进行修改：/img
+    form.uploadDir = "./img/";
+    //保留文件的扩展名
+    form.keepExtensions = true;
+    //这个对象调用parse方法时，会自动帮助我们接收从浏览器传递过来的文件和属性（字段）
+    //parse方法：
+    //  参数一：请求对象
+    //  参数二：回调函数
+    //      err:接收参数时错误的情况
+    //      fields：得到浏览器上传过来的所有的字段（键值对）
+    //      files：得到上传过来的文件的的集合
+
+    var obj = {};
+
+    form.parse(req, function(err, fields, files) {
+        //将文件的名称返回到浏览器
+        if (err) {
+            obj.status = 1;
+            obj.msg = "上传失败";
+        } else {
+            obj.status = 0;
+            obj.msg = "上传成功";
+            obj.src = path.basename(files.img.path);
+        }
+        res.end(JSON.stringify(obj));
+    });
+}
+
+
 
 
 

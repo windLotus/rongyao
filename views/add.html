@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
@@ -8,6 +9,7 @@
             margin: 0;
             padding: 0;
         }
+        
         table {
             margin: 0 auto;
             width: 400px;
@@ -15,20 +17,21 @@
         }
     </style>
 </head>
+
 <body>
-    <form id="form" action="/add" method="POST"  enctype="multipart/form-data">
+    <form id="form">
         <table>
             <tr>
                 <td>姓名</td>
-                <td><input type="text" name="name"></td>
+                <td><input type="text" name="name" id='name'></td>
             </tr>
             <tr>
                 <td>性别</td>
-                <td><input type="radio" name="gender" value="男">男 <input type="radio" value="女" name="gender">女</td>
+                <td><input type="radio" class="gender" name="gender" value="男">男 <input class="gender" type="radio" value="女" name="gender">女</td>
             </tr>
             <tr>
                 <td>上传图片</td>
-                <td><input name="img" type="file"></td>
+                <td><input name="img" id="img" type="file"></td>
             </tr>
             <tr>
                 <td></td>
@@ -39,26 +42,52 @@
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script>
-    // $("#btn").click(function(){
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/add",//提交数据到服务器的add中
-    //         data: $("#form").serialize(),
-    //         dataType: "JSON",
-    //         success: function(reslult){
-    //             if(reslult.statu == 0 ) {
-    //                 alert(reslult.msg);
-    //                 window.location = "/";
-    //             } else {
-    //                 alert(reslult.msg);
-    //             }
-    //             //一种：成功
-    //             //  跳转回首页
-    //             //二种：失败
-    //             //  停留在原本的页面
-    //         }
-    //     });
-    // });
+    $("#btn").click(function(e) {
+        // 阻止submit默认跳转事件
+        e.preventDefault();
+        //之所以不能使用异步上传文件，主要原因是因为ajax中的XMLHTTPRequest对象在提交参数时
+        //默认值的content-type：pplication/x-www-form-urlencoded，所以无法通过异步上传
+        //为了解决这个问题，在XMLHTTPReqset2.0对象中，为我们提供了一种提交文件的方式，使用的对象：
+        //是formData:如果将来我们需要异步上传文件，提交参数可以通过formData对象来提交参数 
+
+        // 使用formdata来上传文件
+        var formData = new FormData();
+
+        // 向formData中添加对象
+        formData.append('name', $('#name').val()); //向formData中加入name属性
+        formData.append('gender', $('.gender:checked').val()); //向formData中加入gender属性
+        formData.append('img', $('#img')[0].files[0]); //向formData加入要上传的文件
+
+        //如果直接通过formData结合JQUERY中的ajax上传文件会报错：content-type: mulitpart/form-data
+        //jquery.min.js:4 Uncaught TypeError: Illegal invocation
+        //为了解决这个错误，需要做两种事情：
+        //      1.0 告诉JQUERY中的ajax对象，你不要再帮我们检查参数了
+        //          processData: false
+        //      2.0也不要帮我们检验内容了
+        //           contentType: false
+
+        // 异步上传数据
+        $.ajax({
+            type: "POST",
+            url: "/add", //提交数据到服务器的add中
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function(reslult) {
+                if (reslult.statu == 0) {
+                    alert(reslult.msg);
+                    window.location = "/";
+                } else {
+                    alert(reslult.msg);
+                }
+                //一种：成功
+                //  跳转回首页
+                //二种：失败
+                //  停留在原本的页面
+            }
+        });
+    });
     //常用的请求方式：
     //get:从服务器中拿数据
     //  直接在地址栏中请求
@@ -69,6 +98,6 @@
     //post:提交数据到服务器中
     //  form表单的post提交
     //  ajax的post请求
-
 </script>
+
 </html>

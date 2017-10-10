@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        table {
+            margin: 0 auto;
+            width: 400px;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form">
+        <input type="hidden" id="id" value="{{id}}">
+        <table>
+            <tr>
+                <td>姓名</td>
+                <td><input type="text" name="name" id='name' value="{{name}}"></td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                {{if (gender == "男")}}
+                <td><input type="radio" class="gender" name="gender" value="男" checked>男 <input class="gender" type="radio" value="女" name="gender">女</td>
+                {{else}}
+                <td><input type="radio" class="gender" name="gender" value="男" checked>男 <input class="gender" type="radio" value="女" name="gender" checked>女</td>
+                {{/if}}
+            </tr>
+            <tr>
+                <td>上传图片</td>
+                <td><img src="/img/{{img}}" id="preImg" alt=""><input name="img" id="img" type="file"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" id="btn" value="保存"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+    // 实现图片预览功能 
+    $('#img').on('change', function() {
+            var formData = new FormData();
+            formData.append('img', $('#img')[0].files[0]);
+            // console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: "/upload", //提交数据到服务器的add中
+                data: formData,
+                dataType: "JSON",
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    if (result.status == 0) {
+                        // alert(reslult.msg);
+                        $('#preImg').attr('src', '/img/' + result.src);
+                    } else {
+                        alert(result.msg);
+                    }
+                }
+            });
+        })
+        // 注册新增点击事件
+    $("#btn").click(function(e) {
+        // 阻止submit默认跳转事件
+        e.preventDefault();
+        //之所以不能使用异步上传文件，主要原因是因为ajax中的XMLHTTPRequest对象在提交参数时
+        //默认值的content-type：pplication/x-www-form-urlencoded，所以无法通过异步上传
+        //为了解决这个问题，在XMLHTTPReqset2.0对象中，为我们提供了一种提交文件的方式，使用的对象：
+        //是formData:如果将来我们需要异步上传文件，提交参数可以通过formData对象来提交参数 
+
+        // 使用formdata来上传文件
+        var formData = new FormData();
+
+        // 向formData中添加对象
+        formData.append('name', $('#name').val()); //向formData中加入name属性
+        formData.append('gender', $('.gender:checked').val()); //向formData中加入gender属性
+        formData.append('img', $('#preImg').attr('src')); //向formData加入要上传的文件
+        formData.append("id", $("#id").val());
+
+        //如果直接通过formData结合JQUERY中的ajax上传文件会报错：content-type: mulitpart/form-data
+        //jquery.min.js:4 Uncaught TypeError: Illegal invocation
+        //为了解决这个错误，需要做两种事情：
+        //      1.0 告诉JQUERY中的ajax对象，你不要再帮我们检查参数了
+        //          processData: false
+        //      2.0也不要帮我们检验内容了
+        //           contentType: false
+
+        // 异步上传数据 
+        $.ajax({
+            type: "POST",
+            url: "/edit", //提交数据到服务器的add中
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                //一种：成功 => 跳转回首页
+                if (result.status == 0) {
+                    alert(result.msg);
+                    // 跳转页面
+                    window.location = "/";
+
+                    //二种：失败 => 停留在原本的页面
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
+    });
+</script>
+
+</html>

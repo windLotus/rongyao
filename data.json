@@ -7,22 +7,16 @@
       "img": "0.jpg"
     },
     {
-      "id": 2,
       "name": "李白",
       "gender": "男",
-      "img": "1.jpg"
+      "img": "upload_915dce12aae61c5bd17cf2581f650d6a.jpg",
+      "id": "2"
     },
     {
-      "id": 3,
-      "name": "后羿",
+      "name": "亚瑟1111",
       "gender": "男",
-      "img": "2.jpg"
-    },
-    {
-      "id": 4,
-      "name": "亚瑟",
-      "gender": "男",
-      "img": "3.jpg"
+      "img": "3.jpg",
+      "id": "4"
     },
     {
       "img": "0.jpg",
@@ -31,22 +25,10 @@
       "id": 5
     },
     {
-      "img": "upload_da923f17922bc3088bb49f968cf44f9e.JPG",
-      "name": "露娜",
+      "img": "upload_e0a61a161ad59a74447eb94b966ac107.jpg",
+      "name": "杜甫",
       "gender": "女",
       "id": 6
-    },
-    {
-      "img": "upload_e33bf1f72a891105be9ec8b06fa204dd.jpeg",
-      "name": "蔡文姬",
-      "gender": "女",
-      "id": 7
-    },
-    {
-      "img": "/img/upload_5d0db0712bbf8b0f7825eb7652fa11a9.jpg",
-      "name": "达摩",
-      "gender": "男",
-      "id": 8
     }
   ]
 }

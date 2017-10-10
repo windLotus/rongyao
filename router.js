@@ -16,7 +16,14 @@ module.exports = function(req, res) {
     } else if (method == "POST" && url == "/add") {
         handler.postAdd(req, res);
     } else if (method == "POST" && url == "/upload") {
+        // 图片上传
         handler.postUpload(req, res);
+    } else if (method == "GET" && url.indexOf("/edit") == 0) {
+        // 修改页面的数据回显
+        handler.getEdit(req, res);
+    } else if (method == "POST" && url == "/edit") {
+        // 修改页面的数据更新保存
+        handler.postEdit(req, res);
     } else if (method == "GET" && url.indexOf("/node_modules") != -1 || url.indexOf("/img") != -1) {
         handler.getStatic(req, res);
     } else {

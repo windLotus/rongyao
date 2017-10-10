@@ -2,6 +2,7 @@ var fs = require("fs");
 
 // 引入模块
 var path = require('path');
+var url = require('url');
 
 //引用formidable(用来帮助我们进行上传文件的第三方包)
 var formidable = require("formidable");
@@ -100,7 +101,76 @@ module.exports.postUpload = function(req, res) {
     });
 }
 
+// 查看修改页面数据回显
+module.exports.getEdit = function(req, res) {
+    // 得到修改页面
+    var editUrl = req.url;
+    // 截取链接中的参数
+    var id = url.parse(editUrl, true).query.id;
+    // 读取数据库的信息
+    fs.readFile("./data.json", function(err, objStr) {
+        if (err) {
+            return res.end('404 not found');
+        }
+        // 将数据库返回的字符串转换为json数据，获取数据中的数组
+        var objArr = JSON.parse(objStr.toString()).heros;
+        var obj = {};
+        // 遍历数组获取数据
+        for (var i = 0; i < objArr.length; i++) {
+            // 找id相匹配的数据
+            if (objArr[i].id == id) {
+                obj = objArr[i];
+                break;
+            }
+        }
+        // 将数据从后台返回至前台渲染数据
+        res.render("edit", obj, function(err, html) {
+            if (err) {
+                res.end("404 not found");
+            }
+            res.end(html);
+        });
+    });
+}
 
+// 保存修改数据页面
+module.exports.postEdit = function(req, res) {
+    // 接受参数
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        // 根据id找到原本的数据
+        fs.readFile("./data.json", function(err, data) {
+            // 获取数据数组
+            var arr = JSON.parse(data.toString()).heros;
+            // 获取图片名
+            fields.img = path.basename(fields.img);
+            // 遍历数组获取相同id的数据
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].id == fields.id) {
+                    arr[i] = fields;
+                    break;
+                }
+            }
+            // 重新将数组转为一个对象
+            var resObj = {
+                    heros: arr
+                }
+                // 重新将数据提交至data.json中去
+            var returnObj = {};
+
+            fs.writeFile('./data.json', JSON.stringify(resObj, null, "  "), function(err) {
+                if (err) {
+                    returnObj.status = 1;
+                    returnObj.msg = "修改失败";
+                } else {
+                    returnObj.status = 0;
+                    returnObj.msg = "修改成功";
+                }
+                res.end(JSON.stringify(returnObj));
+            });
+        });
+    });
+}
 
 module.exports.getStatic = function(req, res) {
     //单独处理静态资源

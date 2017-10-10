@@ -45,8 +45,10 @@ module.exports.postAdd = function(req, res) {
     //      files：得到上传过来的文件的的集合
     form.parse(req, function(err, fields, files) {
         //得到图片名称
-        var path = files.img.path;
-        var fileName = path.split("\\");
+        console.log(fields);
+
+        var imgPath = fields.img;
+        var fileName = imgPath.split("\\");
         // console.log(fileName[fileName.length-1]);
         var obj = {
             img: fileName[fileName.length - 1],
@@ -144,17 +146,10 @@ module.exports.postUpload = function(req, res) {
     form.uploadDir = "./img/";
     //保留文件的扩展名
     form.keepExtensions = true;
-    //这个对象调用parse方法时，会自动帮助我们接收从浏览器传递过来的文件和属性（字段）
-    //parse方法：
-    //  参数一：请求对象
-    //  参数二：回调函数
-    //      err:接收参数时错误的情况
-    //      fields：得到浏览器上传过来的所有的字段（键值对）
-    //      files：得到上传过来的文件的的集合
-
     var obj = {};
-
     form.parse(req, function(err, fields, files) {
+        // console.log(files);
+
         //将文件的名称返回到浏览器
         if (err) {
             obj.status = 1;
@@ -162,7 +157,7 @@ module.exports.postUpload = function(req, res) {
         } else {
             obj.status = 0;
             obj.msg = "上传成功";
-            obj.src = path.basename(files.img.path);
+            obj.src = path.basename(files.img.path); //获取图片名称
         }
         res.end(JSON.stringify(obj));
     });

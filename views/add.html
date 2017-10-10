@@ -46,6 +46,7 @@
     $('#img').on('change', function() {
         var formData = new FormData();
         formData.append('img', $('#img')[0].files[0]);
+        // console.log(formData);
         $.ajax({
             type: "POST",
             url: "/upload", //提交数据到服务器的add中
@@ -53,12 +54,12 @@
             dataType: "JSON",
             processData: false,
             contentType: false,
-            success: function(reslult) {
-                if (reslult.status == 0) {
+            success: function(result) {
+                if (result.status == 0) {
                     // alert(reslult.msg);
-                    $('#preImg').attr('src', '/img/' + reslult.src);
+                    $('#preImg').attr('src', '/img/' + result.src);
                 } else {
-                    alert(reslult.msg);
+                    alert(result.msg);
                 }
             }
         });
@@ -82,7 +83,7 @@
         // 向formData中添加对象
         formData.append('name', $('#name').val()); //向formData中加入name属性
         formData.append('gender', $('.gender:checked').val()); //向formData中加入gender属性
-        formData.append('img', $('#img')[0].files[0]); //向formData加入要上传的文件
+        formData.append('img', $('#preImg').attr('src')); //向formData加入要上传的文件
 
         //如果直接通过formData结合JQUERY中的ajax上传文件会报错：content-type: mulitpart/form-data
         //jquery.min.js:4 Uncaught TypeError: Illegal invocation
@@ -92,7 +93,7 @@
         //      2.0也不要帮我们检验内容了
         //           contentType: false
 
-        // 异步上传数据
+        // 异步上传数据 
         $.ajax({
             type: "POST",
             url: "/add", //提交数据到服务器的add中

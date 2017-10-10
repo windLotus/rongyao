@@ -41,6 +41,12 @@
       "name": "蔡文姬",
       "gender": "女",
       "id": 7
+    },
+    {
+      "img": "/img/upload_5d0db0712bbf8b0f7825eb7652fa11a9.jpg",
+      "name": "达摩",
+      "gender": "男",
+      "id": 8
     }
   ]
 }

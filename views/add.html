@@ -42,33 +42,29 @@
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script>
-    // 实现图片预览功能
+    // 实现图片预览功能 
     $('#img').on('change', function() {
-        var formData = new FormData();
-        formData.append('img', $('#img')[0].files[0]);
-        // console.log(formData);
-        $.ajax({
-            type: "POST",
-            url: "/upload", //提交数据到服务器的add中
-            data: formData,
-            dataType: "JSON",
-            processData: false,
-            contentType: false,
-            success: function(result) {
-                if (result.status == 0) {
-                    // alert(reslult.msg);
-                    $('#preImg').attr('src', '/img/' + result.src);
-                } else {
-                    alert(result.msg);
+            var formData = new FormData();
+            formData.append('img', $('#img')[0].files[0]);
+            // console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: "/upload", //提交数据到服务器的add中
+                data: formData,
+                dataType: "JSON",
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    if (result.status == 0) {
+                        // alert(reslult.msg);
+                        $('#preImg').attr('src', '/img/' + result.src);
+                    } else {
+                        alert(result.msg);
+                    }
                 }
-            }
-        });
-    })
-
-
-
-
-
+            });
+        })
+        // 注册新增点击事件
     $("#btn").click(function(e) {
         // 阻止submit默认跳转事件
         e.preventDefault();
@@ -102,29 +98,18 @@
             processData: false,
             contentType: false,
             success: function(reslult) {
+                //一种：成功 => 跳转回首页
                 if (reslult.statu == 0) {
                     alert(reslult.msg);
                     window.location = "/";
+
+                    //二种：失败 => 停留在原本的页面
                 } else {
                     alert(reslult.msg);
                 }
-                //一种：成功
-                //  跳转回首页
-                //二种：失败
-                //  停留在原本的页面
             }
         });
     });
-    //常用的请求方式：
-    //get:从服务器中拿数据
-    //  直接在地址栏中请求
-    //  通过a连接跳转
-    //  使用js跳转：window.location = "/";
-    //  form表单的get提交
-    //  ajax的get请求
-    //post:提交数据到服务器中
-    //  form表单的post提交
-    //  ajax的post请求
 </script>
 
 </html>

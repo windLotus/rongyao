@@ -54,7 +54,7 @@ module.exports.postAdd = function(req, res) {
             }
             var objData = JSON.parse(oobj.toString());
             //2.0取出最后一条数据的id属性
-            var id = objData.heros[objData.heros.length - 1].id + 1;
+            var id = parseInt(objData.heros[objData.heros.length - 1].id) + 1;
             obj.id = id;
             //3.0将新增的数据添加到objdata的heros中
             objData.heros.push(obj);
@@ -170,6 +170,38 @@ module.exports.postEdit = function(req, res) {
             });
         });
     });
+}
+
+// 删除数据
+module.exports.getDel = function(req, res) {
+    // 获取有id参数的链接
+    var urlDel = req.url;
+    //截取要删除的id
+    var id = url.parse(urlDel, true).query.id;
+    fs.readFile("./data.json", function(err, data) {
+        var obj = JSON.parse(data.toString());
+        var arr = obj.heros;
+        for (var i = 0; i < arr.length; i++) {
+            // 在数据库中找相匹配的id数据
+            if (arr[i].id == id) {
+                // 将数据从数据库中删除
+                arr.splice(i, 1);
+                break;
+            }
+        }
+        var returnObj = {};
+        // 重新将数据写进数据库中去
+        fs.writeFile("./data.json", JSON.stringify(obj, null, "  "), function(err) {
+            if (err) {
+                returnObj.status = 1;
+                returnObj.msg = "删除失败";
+            } else {
+                returnObj.status = 0;
+                returnObj.msg = "删除成功";
+            }
+            res.end(JSON.stringify(returnObj));
+        })
+    })
 }
 
 module.exports.getStatic = function(req, res) {

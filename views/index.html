@@ -38,13 +38,36 @@
                     <td>
                         <a href="#">查看</a>
                         <a href="/edit?id={{$value.id}}">修改</a>
-                        <a href="#">删除</a>
+                        <a onclick="del({{$value.id}})" href="javascript:void(0)">删除</a>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
     </div>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        // 添加删除功能
+        function del(id) {
+            if (confirm("确定删除吗？")) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/del',
+                    data: 'id=' + id,
+                    dataType: 'JSON',
+                    success: function(result) {
+                        if (result.status == 0) {
+                            alert('删除成功');
+                            window.location = "/";
+                        } else {
+                            alert('删除失败');
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+
 </body>
 
 </html>

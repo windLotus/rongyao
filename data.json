@@ -10,23 +10,29 @@
       "name": "李白",
       "gender": "男",
       "img": "upload_915dce12aae61c5bd17cf2581f650d6a.jpg",
-      "id": "2"
+      "id": 2
     },
     {
-      "name": "亚瑟1111",
-      "gender": "男",
-      "img": "3.jpg",
-      "id": "4"
-    },
-    {
-      "img": "0.jpg",
+      "img": "upload_5c0cf8b6481d06fe79bfb49dbf5a5ebd.jpg",
       "name": "李白",
       "gender": "男",
+      "id": 3
+    },
+    {
+      "img": "upload_4f3badd552354f4ae21ee49eaa349e22.jpg",
+      "name": "达摩",
+      "gender": "男",
+      "id": 4
+    },
+    {
+      "img": "upload_22c2693737a6b5453b45aee007a10d97.JPG",
+      "name": "露娜",
+      "gender": "女",
       "id": 5
     },
     {
-      "img": "upload_e0a61a161ad59a74447eb94b966ac107.jpg",
-      "name": "杜甫",
+      "img": "upload_98631d561359dc5900d9c2321bc4a28d.jpeg",
+      "name": "蔡文姬",
       "gender": "女",
       "id": 6
     }

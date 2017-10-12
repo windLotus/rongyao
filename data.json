@@ -7,18 +7,6 @@
       "img": "0.jpg"
     },
     {
-      "name": "李白",
-      "gender": "男",
-      "img": "upload_915dce12aae61c5bd17cf2581f650d6a.jpg",
-      "id": 2
-    },
-    {
-      "img": "upload_5c0cf8b6481d06fe79bfb49dbf5a5ebd.jpg",
-      "name": "李白",
-      "gender": "男",
-      "id": 3
-    },
-    {
       "img": "upload_4f3badd552354f4ae21ee49eaa349e22.jpg",
       "name": "达摩",
       "gender": "男",
@@ -35,6 +23,30 @@
       "name": "蔡文姬",
       "gender": "女",
       "id": 6
+    },
+    {
+      "name": "狄仁杰",
+      "gender": "男",
+      "img": "upload_617dab01210005ad78a969f819f335ae.jpg",
+      "id": 7
+    },
+    {
+      "name": "狄仁杰",
+      "gender": "男",
+      "img": "upload_617dab01210005ad78a969f819f335ae.jpg",
+      "id": 8
+    },
+    {
+      "name": "狄仁杰",
+      "gender": "男",
+      "img": "upload_617dab01210005ad78a969f819f335ae.jpg",
+      "id": 9
+    },
+    {
+      "name": "狄仁杰",
+      "gender": "男",
+      "img": "upload_617dab01210005ad78a969f819f335ae.jpg",
+      "id": 10
     }
   ]
 }

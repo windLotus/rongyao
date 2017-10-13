@@ -107,9 +107,7 @@ module.exports.getDel = function(req, res) {
         if (err) {
             return res.end("404");
         }
-        res.render("del", obj, function(err, html) {
-            res.end(html);
-        });
+        res.end(returnObj());
     });
 }
 
